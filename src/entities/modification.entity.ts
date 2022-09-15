@@ -18,6 +18,10 @@ export class ModificationEntity {
 
   @Field()
   @Column()
+  name: string;
+
+  @Field()
+  @Column()
   selectionCount: number;
 
   @Field()

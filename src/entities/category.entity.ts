@@ -1,6 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { MenuItemEntity } from './menu-item.entity';
+import { MenuEntity } from './menu.entity';
 
 @ObjectType()
 @Entity()
@@ -16,4 +23,8 @@ export class CategoryEntity {
   @Field(() => [MenuItemEntity])
   @OneToMany(() => MenuItemEntity, (menuItem) => menuItem.category)
   menuItems: MenuItemEntity[];
+
+  @ManyToOne(() => MenuEntity, (menu) => menu.categories)
+  @Field(() => MenuEntity)
+  menu: MenuEntity;
 }

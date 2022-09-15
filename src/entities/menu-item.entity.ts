@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ModificationEntity } from './modification.entity';
-import { CategoryEntity } from './entities/category.entity';
+import { CategoryEntity } from './category.entity';
 
 @ObjectType()
 @Entity()
@@ -31,4 +31,8 @@ export class MenuItemEntity {
   @Field(() => [ModificationEntity])
   @OneToMany(() => ModificationEntity, (modification) => modification.menuItem)
   modifications: ModificationEntity[];
+
+  @Field()
+  @Column()
+  freeTextModification: boolean;
 }

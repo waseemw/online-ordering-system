@@ -13,6 +13,10 @@ export class ModificationItemEntity {
   @Column()
   name: string;
 
+  @Field()
+  @Column()
+  price: number;
+
   @Field(() => ModificationEntity)
   @ManyToOne(
     () => ModificationEntity,

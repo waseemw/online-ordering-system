@@ -3,7 +3,7 @@ import { CategoryEntity } from '../entities/category.entity';
 import { DataSource } from 'typeorm';
 
 @Resolver(() => CategoryEntity)
-export class CategoriesResolver {
+export class CategoryResolver {
   private categoryRepo = this.ds.getRepository(CategoryEntity);
 
   constructor(private ds: DataSource) {}
@@ -14,7 +14,10 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => CategoryEntity)
-  async createCategory(@Args('name') name: string) {
-    return await this.categoryRepo.save({ name });
+  async createCategory(
+    @Args('name') name: string,
+    @Args('menuId') menuId: string,
+  ) {
+    return await this.categoryRepo.save({ name, menu: { id: menuId } });
   }
 }

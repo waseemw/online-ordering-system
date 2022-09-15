@@ -1,28 +1,23 @@
 import { DataSource, Entity } from 'typeorm';
 import { Args, Mutation, ObjectType, Query } from '@nestjs/graphql';
-import { CartEntity } from 'src/entities/cart.entity';
-import { CartItemEntity } from '../entities/cart-item.entity';
+import { MenuEntity } from '../entities/menu.entity';
 
 @Entity()
 @ObjectType()
-export class CartResolver {
-  private cartRepo = this.ds.getRepository(CartEntity);
+export class MenuResolver {
+  private menuRepo = this.ds.getRepository(MenuEntity);
 
   constructor(private ds: DataSource) {}
 
-  @Query(() => CartEntity)
-  async cart(@Args('id') id: string) {
-    return await this.cartRepo.findOneBy({ id });
+  @Query(() => MenuEntity)
+  async menu(@Args('id') id: string) {
+    return await this.menuRepo.findOneBy({ id });
   }
 
-  @Mutation(() => CartEntity)
-  async createCart(
-    @Args('menuId') menuId: string,
-    @Args('cartItemIds', { type: () => [String] }) cartItemIds: string[],
-  ) {
-    return await this.cartRepo.save({
-      menu: { id: menuId },
-      cartItems: cartItemIds.map((id) => ({ id } as Partial<CartItemEntity>)),
+  @Mutation(() => MenuEntity)
+  async createMenu(@Args('name') name: string) {
+    return await this.menuRepo.save({
+      name,
     });
   }
 }

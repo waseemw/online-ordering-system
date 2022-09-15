@@ -1,28 +1,30 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { MenuItemEntity } from '../entities/menu-item.entity';
+import { ModificationEntity } from '../entities/modification.entity';
 import { DataSource } from 'typeorm';
 
-@Resolver(() => MenuItemEntity)
-export class MenuItemResolver {
-  private menuItemRepo = this.ds.getRepository(MenuItemEntity);
+@Resolver(() => ModificationEntity)
+export class ModificationResolver {
+  private modificationRepo = this.ds.getRepository(ModificationEntity);
 
   constructor(private ds: DataSource) {}
 
-  @Query(() => MenuItemEntity)
-  async menuItem(@Args('id') id: string) {
-    return await this.menuItemRepo.findOneBy({ id });
+  @Query(() => ModificationEntity)
+  async modification(@Args('id') id: string) {
+    return await this.modificationRepo.findOneBy({ id });
   }
 
-  @Mutation(() => MenuItemEntity)
-  async createMenuItem(
+  @Mutation(() => ModificationEntity)
+  async createModification(
     @Args('name') name: string,
-    @Args('price') price: number,
-    @Args('menuItemId') categoryId: string,
+    @Args('selectionCount') selectionCount: number,
+    @Args('type') type: 'OPTIONAL' | 'REQUIRED',
+    @Args('menuItemId') menuItemId: string,
   ) {
-    return await this.menuItemRepo.save({
+    return await this.modificationRepo.save({
       name,
-      price,
-      category: { id: categoryId },
+      selectionCount,
+      type,
+      menuItem: { id: menuItemId },
     });
   }
 }

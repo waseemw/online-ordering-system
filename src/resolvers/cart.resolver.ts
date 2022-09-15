@@ -1,7 +1,6 @@
 import { DataSource, Entity } from 'typeorm';
 import { Args, Mutation, ObjectType, Query } from '@nestjs/graphql';
-import { CartEntity } from 'src/entities/cart.entity';
-import { ModificationItemEntity } from '../entities/modification-item.entity';
+import { CartEntity } from '../entities/cart.entity';
 
 @Entity()
 @ObjectType()
@@ -16,18 +15,9 @@ export class CartResolver {
   }
 
   @Mutation(() => CartEntity)
-  async createCart(
-    @Args('menuItemId') menuItemId: string,
-    @Args('modificationItemIds', { type: () => [String] })
-    modificationItemIds: string[],
-    @Args('freeFormText', { nullable: true }) freeFormText: string,
-  ) {
+  async createCart(@Args('menuId') menuId: string) {
     return await this.cartRepo.save({
-      menuItem: { id: menuItemId },
-      modificationItems: modificationItemIds.map(
-        (id) => ({ id } as Partial<ModificationItemEntity>),
-      ),
-      freeFormText: freeFormText,
+      menu: { id: menuId },
     });
   }
 }
